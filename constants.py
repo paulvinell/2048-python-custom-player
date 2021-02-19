@@ -1,6 +1,8 @@
 SIZE = 400
-GRID_LEN = 4
+GRID_LEN_X = 3
+GRID_LEN_Y = 3
 GRID_PADDING = 10
+PROBABILITY_4 = 0.1
 
 BACKGROUND_COLOR_GAME = "#92877d"
 BACKGROUND_COLOR_CELL_EMPTY = "#9e948a"
@@ -23,18 +25,4 @@ CELL_COLOR_DICT = {2: "#776e65", 4: "#776e65", 8: "#f9f6f2", 16: "#f9f6f2",
 
 FONT = ("Verdana", 40, "bold")
 
-KEY_UP_ALT = "\'\\uf700\'"
-KEY_DOWN_ALT = "\'\\uf701\'"
-KEY_LEFT_ALT = "\'\\uf702\'"
-KEY_RIGHT_ALT = "\'\\uf703\'"
-
-KEY_UP = "'w'"
-KEY_DOWN = "'s'"
-KEY_LEFT = "'a'"
-KEY_RIGHT = "'d'"
-KEY_BACK = "'b'"
-
-KEY_J = "'j'"
-KEY_K = "'k'"
-KEY_L = "'l'"
-KEY_H = "'h'"
+directions = { 0: 'UP', 1: 'Down', 2: 'Left', 3: 'Right' }
