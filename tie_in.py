@@ -6,8 +6,6 @@ from game_grid import GameGrid
 from players.manual_player import ManualPlayer
 from players.rand_player import RandomPlayer
 
-# TODO: let player know the available actions (which directions the player can apply)
-
 class TieIn():
     def __init__(self, player, render=True):
         self.game = Game()

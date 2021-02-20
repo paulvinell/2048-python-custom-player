@@ -29,6 +29,15 @@ Custom players must implement the following methods:
 
 I recommend you look at **players/rand_player.py** and **players/manual_player.py** for further details.
 
+### Possible moves
+
+For the sake of convenience, you can inside your custom player class find out which directions are available by calling:
+
+```
+game.possible_directions()
+```
+
+
 # How do I use my custom player?
 
 You instantiate your player, and create and start a "tie in."

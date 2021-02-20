@@ -91,6 +91,49 @@ class Game():
 
         return mat
 
+    # Calculates which directions it is possible to move in
+    def possible_directions(self):
+        directions = []
+        mat = self.matrix
+
+        for i in range(1, len(mat)):
+            for j in range(len(mat[0])):
+                if mat[i][j] > 0 and (mat[i][j] == mat[i-1][j] or mat[i-1][j] == 0):
+                    directions.append(0) # UP
+                    break
+
+            if 0 in directions:
+                break
+
+        for i in range(len(mat) - 1):
+            for j in range(len(mat[0])):
+                if mat[i][j] > 0 and (mat[i][j] == mat[i+1][j] or mat[i+1][j] == 0):
+                    directions.append(1) # DOWN
+                    break
+
+            if 1 in directions:
+                break
+
+        for i in range(len(mat)):
+            for j in range(1, len(mat[0])):
+                if mat[i][j] > 0 and (mat[i][j] == mat[i][j-1] or mat[i][j-1] == 0):
+                    directions.append(2) # LEFT
+                    break
+
+            if 2 in directions:
+                break
+
+        for i in range(len(mat)):
+            for j in range(len(mat[0]) - 1):
+                if mat[i][j] > 0 and (mat[i][j] == mat[i][j+1] or mat[i][j+1] == 0):
+                    directions.append(3) # RIGHT
+                    break
+
+            if 3 in directions:
+                break
+
+        return directions
+
     def __reverse(self, mat):
         new = []
         for i in range(len(mat)):

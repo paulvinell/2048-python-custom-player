@@ -1,3 +1,4 @@
+import random
 import numpy as np
 
 class RandomPlayer():
@@ -12,7 +13,7 @@ class RandomPlayer():
     # Output: a digit from [0, 1, 2, 3] signifying direction.
     # 0: UP, 1: DOWN, 2: LEFT, 3: RIGHT
     def play(self, game):
-        return np.random.randint(0, high=4)
+        return random.choice(game.possible_directions())
 
     # The game is over.
     # Input: game state
