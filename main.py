@@ -14,7 +14,7 @@ def main():
     elif player_int == "2":
         player = RandomPlayer()
 
-    tie = TieIn(player, render=True)
+    tie = TieIn(player, render=True, log_history=False)
     tie.start()
 
 if __name__ == '__main__':

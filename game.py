@@ -4,15 +4,21 @@ import copy
 import constants as c
 
 class Game():
-    def __init__(self):
+    def __init__(self, log_history=False):
         self.move_count = 0
         self.max_tile = 0
         self.score = 0
+
+        self.log_history = log_history
+        if self.log_history:
+            self.move_history = []
+            self.board_history = []
+
         self.matrix = self.__init_matrix()
 
     def make_move(self, move):
         game = self.matrix
-        old_game = copy.deepcopy(game)
+        game_copy = copy.deepcopy(game)
 
         if move == 0:
             game = self.__up(game)
@@ -23,7 +29,7 @@ class Game():
         elif move == 3:
             game = self.__right(game)
 
-        changed = not np.array_equal(game, old_game)
+        changed = not np.array_equal(game, game_copy)
 
         # Case 1: there was no change: don't add a tile
         # Case 2: board was full and there was a change:
@@ -33,6 +39,10 @@ class Game():
         if changed:
             game = self.__add_two(game)
             self.move_count += 1
+            if self.log_history:
+                self.move_history.append(move)
+                self.board_history.append(game_copy)
+
             self.matrix = game
 
         return changed

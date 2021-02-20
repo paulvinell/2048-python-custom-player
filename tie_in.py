@@ -7,8 +7,8 @@ from players.manual_player import ManualPlayer
 from players.rand_player import RandomPlayer
 
 class TieIn():
-    def __init__(self, player, render=True):
-        self.game = Game()
+    def __init__(self, player, render=True, log_history=False):
+        self.game = Game(log_history=log_history)
         self.player = player
         self.render = render
 

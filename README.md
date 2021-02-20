@@ -34,9 +34,23 @@ I recommend you look at **players/rand_player.py** and **players/manual_player.p
 For the sake of convenience, you can inside your custom player class find out which directions are available by calling:
 
 ```
-game.possible_directions()
+game.possible_directions() # 1D array of directions
 ```
 
+### State and action history
+
+If needed a player's state and action history can be stored and accessed. Recording this can be enabled by instantiating TieIn like so:
+
+```
+TieIn(player, log_history=True)
+```
+
+and the history can be accessed by:
+
+```
+game.move_history # 1D array of directions
+game.board_history # 3D array of board states
+```
 
 # How do I use my custom player?
 
