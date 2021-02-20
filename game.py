@@ -3,11 +3,11 @@ import numpy as np
 import copy
 import constants as c
 
-
 class Game():
     def __init__(self):
         self.move_count = 0
         self.max_tile = 0
+        self.score = 0
         self.matrix = self.__init_matrix()
 
     def make_move(self, move):
@@ -125,6 +125,7 @@ class Game():
                     mat[i][j] *= 2
                     mat[i][j+1] = 0
                     self.max_tile = np.maximum(self.max_tile, mat[i][j])
+                    self.score += mat[i][j]
         return mat
 
     def __up(self, game):

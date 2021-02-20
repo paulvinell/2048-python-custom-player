@@ -1,20 +1,10 @@
-import random
 from tkinter import Frame, Label, CENTER
 
-import threading
-import time
 import constants as c
-import numpy as np
 from game import Game
 
-from players.manual_player import ManualPlayer
-from players.rand_player import RandomPlayer
-
-# TODO: keep track of number of moves (excluding moves that don't affect anything)
-# TODO: completely separate game logic, rendering, and player
-
 class GameGrid(Frame):
-    def __init__(self, render=True, player=None):
+    def __init__(self, game):
         Frame.__init__(self)
 
         self.grid()
@@ -22,23 +12,11 @@ class GameGrid(Frame):
         self.master.bind("<KeyPress>", self.key_down)
         self.master.bind("<KeyRelease>", self.key_up)
 
-        self.game = Game()
-
         self.grid_cells = []
         self.keys = {} # Which keys are currently being pressed?
-        self.render = render # Boolean - whether or not to render
 
         self.init_grid()
-        self.update_grid_cells()
-
-        if player is None:
-            # self.player = RandomPlayer()
-            self.player = ManualPlayer(self)
-
-        self.gamethread = threading.Thread(target=self.gameloop)
-        self.gamethread.start()
-
-        self.mainloop()
+        self.update_grid_cells(game)
 
     def init_grid(self):
         background = Frame(self, bg=c.BACKGROUND_COLOR_GAME,
@@ -61,10 +39,10 @@ class GameGrid(Frame):
 
             self.grid_cells.append(grid_row)
 
-    def update_grid_cells(self):
+    def update_grid_cells(self, game):
         for i in range(c.GRID_LEN_Y):
             for j in range(c.GRID_LEN_X):
-                new_number = self.game.matrix[i][j]
+                new_number = game.matrix[i][j]
                 if new_number == 0:
                     self.grid_cells[i][j].configure(
                         text="", bg=c.BACKGROUND_COLOR_CELL_EMPTY)
@@ -81,24 +59,3 @@ class GameGrid(Frame):
     def key_up(self, event):
         key = event.keysym
         self.keys[key] = False
-
-    def gameloop(self):
-        while True:
-            response = self.player.play(self.game.matrix) # Ask for player input
-
-            changed = self.game.make_move(response) # Try to perform the move
-
-            if changed:
-                if self.render:
-                    self.update_grid_cells() # Render if we're supposed to
-
-                if not self.game.alive():
-                    self.player.lost(self.game)
-                    break # Quit the game loop if the game is over
-
-                sleep_time = self.player.sleep(self.game.matrix)
-                if sleep_time > 0:
-                    time.sleep(sleep_time) # Sleeping can be necessary to visualize automated agents playing
-
-if __name__ == '__main__':
-    gamegrid = GameGrid()
