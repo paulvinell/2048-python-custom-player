@@ -20,11 +20,12 @@ class TieIn():
             self.player.game_grid_init(self.game_grid)
 
     def start(self):
-        self.gamethread = threading.Thread(target=self.__gameloop)
-        self.gamethread.start()
-
         if self.render:
+            self.gamethread = threading.Thread(target=self.__gameloop)
+            self.gamethread.start()
             self.game_grid.mainloop()
+        else:
+            self.__gameloop()
 
     def __gameloop(self):
         while True:
