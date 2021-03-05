@@ -5,20 +5,30 @@ import constants as c
 
 class Game():
     def __init__(self, log_history=False):
+        # Fitness variables
         self.move_count = 0
         self.max_tile = 0
         self.score = 0
 
+        # Reward variables
+        self.score_diff = 0
+        self.tile_count_diff = 0
+
+        # History variables
         self.log_history = log_history
         if self.log_history:
             self.move_history = []
             self.board_history = []
 
+        # Game variables
         self.matrix = self.__init_matrix()
 
     def make_move(self, move):
         game = self.matrix
         game_copy = copy.deepcopy(game)
+
+        score_before = self.score
+        tile_count_before = self.__tile_count()
 
         if move == 0:
             game = self.__up(game)
@@ -45,6 +55,9 @@ class Game():
 
             self.matrix = game
 
+            self.score_diff = self.score - score_before
+            self.tile_count_diff = self.__tile_count() - tile_count_before
+
         return changed
 
     # In this variant, there is only Lost/Not lost.
@@ -67,39 +80,6 @@ class Game():
                     return True
 
         return False
-
-    # Creates a game board of dimensions
-    # specified in Constants and adds
-    # two starting tiles.
-    def __init_matrix(self):
-        matrix = []
-
-        for i in range(c.GRID_LEN_Y):
-            matrix.append([0] * c.GRID_LEN_X)
-
-        matrix = self.__add_two(matrix)
-        matrix = self.__add_two(matrix)
-
-        return matrix
-
-    # Adds a two or four tile to an empty slot
-    def __add_two(self, mat):
-        empty = []
-        for a, col in enumerate(mat):
-            for b, elem in enumerate(col):
-                if elem == 0:
-                    empty.append((a, b))
-
-        if len(empty) == 0:
-            return mat
-
-        a, b = random.choice(empty)
-        value = 4 if random.random() <= c.PROBABILITY_4 else 2
-
-        mat[a][b] = value
-        self.max_tile = np.maximum(self.max_tile, value)
-
-        return mat
 
     # Calculates which directions it is possible to move in
     def possible_directions(self):
@@ -143,6 +123,49 @@ class Game():
                 break
 
         return directions
+
+    # Creates a game board of dimensions
+    # specified in Constants and adds
+    # two starting tiles.
+    def __init_matrix(self):
+        matrix = []
+
+        for i in range(c.GRID_LEN_Y):
+            matrix.append([0] * c.GRID_LEN_X)
+
+        matrix = self.__add_two(matrix)
+        matrix = self.__add_two(matrix)
+
+        self.tile_count_diff = 2
+
+        return matrix
+
+    # Adds a two or four tile to an empty slot
+    def __add_two(self, mat):
+        empty = []
+        for a, col in enumerate(mat):
+            for b, elem in enumerate(col):
+                if elem == 0:
+                    empty.append((a, b))
+
+        if len(empty) == 0:
+            return mat
+
+        a, b = random.choice(empty)
+        value = 4 if random.random() <= c.PROBABILITY_4 else 2
+
+        mat[a][b] = value
+        self.max_tile = np.maximum(self.max_tile, value)
+
+        return mat
+
+    def __tile_count(self):
+        res = 0
+        for a, col in enumerate(self.matrix):
+            for b, elem in enumerate(col):
+                if elem > 0:
+                    res += 1
+        return res
 
     def __reverse(self, mat):
         new = []

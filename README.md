@@ -52,6 +52,19 @@ game.move_history # 1D array of directions
 game.board_history # 3D array of board states
 ```
 
+### Nice for fitness functions
+```
+game.move_count # How many moves have been performed during a game?
+game.max_tile # How far did you get?
+game.score # The ordinary measure of 2048 score
+```
+
+### Nice for reward functions
+```
+game.score_diff # The change in score caused by the last move
+game.tile_count_diff # The change in the number of tiles caused by the last move
+```
+
 # How do I use my custom player?
 
 You instantiate your player, and create and start a "tie in."
